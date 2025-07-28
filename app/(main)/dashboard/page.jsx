@@ -1,20 +1,18 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Plus, Image, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useConvexQuery } from "@/hooks/use-convex-query";
-import { api } from "@/convex/_generated/api";
-import { NewProjectModal } from "./_components/new-project-modal";
-import { ProjectGrid } from "./_components/project-grid";
+import React, { useState } from 'react';
+import { Plus, Image, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useConvexQuery } from '@/hooks/use-convex-query';
+import { api } from '@/convex/_generated/api';
+import { NewProjectModal } from './_components/new-project-modal';
+import { ProjectGrid } from './_components/project-grid';
 
 export default function DashboardPage() {
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
 
   // Get user's projects
-  const { data: projects, isLoading } = useConvexQuery(
-    api.projects.getUserProjects
-  );
+  const { data: projects, isLoading } = useConvexQuery(api.projects.getUserProjects);
 
   return (
     <div className="min-h-screen pt-32 pb-16">
@@ -22,12 +20,8 @@ export default function DashboardPage() {
         {/* Dashboard Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">
-              Your Projects
-            </h1>
-            <p className="text-white/70">
-              Create and manage your AI-powered image designs
-            </p>
+            <h1 className="text-4xl font-bold text-white mb-2">Your Projects</h1>
+            <p className="text-white/70">Create and manage your AI-powered image designs</p>
           </div>
 
           <Button
@@ -70,21 +64,14 @@ function EmptyState({ onCreateProject }) {
         <Image className="h-12 w-12 text-cyan-400" />
       </div>
 
-      <h3 className="text-2xl font-semibold text-white mb-3">
-        Create Your First Project
-      </h3>
+      <h3 className="text-2xl font-semibold text-white mb-3">Create Your First Project</h3>
 
       <p className="text-white/70 mb-8 max-w-md">
-        Upload an image to start editing with our powerful AI tools, or create a
-        blank canvas to design from scratch.
+        Upload an image to start editing with our powerful AI tools, or create a blank canvas to
+        design from scratch.
       </p>
 
-      <Button
-        onClick={onCreateProject}
-        variant="primary"
-        size="xl"
-        className="gap-2"
-      >
+      <Button onClick={onCreateProject} variant="primary" size="xl" className="gap-2">
         <Sparkles className="h-5 w-5" />
         Start Creating
       </Button>

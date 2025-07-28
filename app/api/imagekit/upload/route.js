@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import ImageKit from "imagekit";
-import { auth } from "@clerk/nextjs/server";
+import { NextResponse } from 'next/server';
+import ImageKit from 'imagekit';
+import { auth } from '@clerk/nextjs/server';
 
 // Initialize ImageKit
 const imagekit = new ImageKit({
@@ -14,16 +14,16 @@ export async function POST(request) {
     // Verify authentication
     const { userId } = await auth();
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get form data
     const formData = await request.formData();
-    const file = formData.get("file");
-    const fileName = formData.get("fileName");
+    const file = formData.get('file');
+    const fileName = formData.get('fileName');
 
     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
     // Convert file to buffer
@@ -32,15 +32,14 @@ export async function POST(request) {
 
     // Generate unique filename
     const timestamp = Date.now();
-    const sanitizedFileName =
-      fileName?.replace(/[^a-zA-Z0-9.-]/g, "_") || "upload";
+    const sanitizedFileName = fileName?.replace(/[^a-zA-Z0-9.-]/g, '_') || 'upload';
     const uniqueFileName = `${userId}/${timestamp}_${sanitizedFileName}`;
 
     // Upload to ImageKit - Simple server-side upload
     const uploadResponse = await imagekit.upload({
       file: buffer,
       fileName: uniqueFileName,
-      folder: "/projects",
+      folder: '/projects',
     });
 
     // Generate thumbnail URL using ImageKit transformations
@@ -50,7 +49,7 @@ export async function POST(request) {
         {
           width: 400,
           height: 300,
-          cropMode: "maintain_ar",
+          cropMode: 'maintain_ar',
           quality: 80,
         },
       ],
@@ -68,14 +67,14 @@ export async function POST(request) {
       name: uploadResponse.name,
     });
   } catch (error) {
-    console.error("ImageKit upload error:", error);
+    console.error('ImageKit upload error:', error);
     return NextResponse.json(
       {
         success: false,
-        error: "Failed to upload image",
+        error: 'Failed to upload image',
         details: error.message,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

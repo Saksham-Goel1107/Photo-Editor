@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import React, { useState, useCallback } from "react";
-import { X, Upload, Image as ImageIcon, Loader2, Crown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import React, { useState, useCallback } from 'react';
+import { X, Upload, Image as ImageIcon, Loader2, Crown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { useDropzone } from "react-dropzone";
-import { useConvexMutation, useConvexQuery } from "@/hooks/use-convex-query";
-import { usePlanAccess } from "@/hooks/use-plan-access";
-import { UpgradeModal } from "@/components/upgrade-modal";
-import { api } from "@/convex/_generated/api";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+} from '@/components/ui/dialog';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { useDropzone } from 'react-dropzone';
+import { useConvexMutation, useConvexQuery } from '@/hooks/use-convex-query';
+import { usePlanAccess } from '@/hooks/use-plan-access';
+import { UpgradeModal } from '@/components/upgrade-modal';
+import { api } from '@/convex/_generated/api';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 export function NewProjectModal({ isOpen, onClose }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [projectTitle, setProjectTitle] = useState("");
+  const [projectTitle, setProjectTitle] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
@@ -46,15 +46,15 @@ export function NewProjectModal({ isOpen, onClose }) {
       setPreviewUrl(URL.createObjectURL(file));
 
       // Auto-generate title from filename
-      const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
-      setProjectTitle(nameWithoutExt || "Untitled Project");
+      const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
+      setProjectTitle(nameWithoutExt || 'Untitled Project');
     }
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".webp", ".gif"],
+      'image/*': ['.png', '.jpg', '.jpeg', '.webp', '.gif'],
     },
     maxFiles: 1,
     maxSize: 20 * 1024 * 1024, // 20MB limit
@@ -69,7 +69,7 @@ export function NewProjectModal({ isOpen, onClose }) {
     }
 
     if (!selectedFile || !projectTitle.trim()) {
-      toast.error("Please select an image and enter a project title");
+      toast.error('Please select an image and enter a project title');
       return;
     }
 
@@ -78,18 +78,18 @@ export function NewProjectModal({ isOpen, onClose }) {
     try {
       // Upload to ImageKit via our API route
       const formData = new FormData();
-      formData.append("file", selectedFile);
-      formData.append("fileName", selectedFile.name);
+      formData.append('file', selectedFile);
+      formData.append('fileName', selectedFile.name);
 
-      const uploadResponse = await fetch("/api/imagekit/upload", {
-        method: "POST",
+      const uploadResponse = await fetch('/api/imagekit/upload', {
+        method: 'POST',
         body: formData,
       });
 
       const uploadData = await uploadResponse.json();
 
       if (!uploadData.success) {
-        throw new Error(uploadData.error || "Failed to upload image");
+        throw new Error(uploadData.error || 'Failed to upload image');
       }
 
       // Create project in Convex
@@ -103,15 +103,13 @@ export function NewProjectModal({ isOpen, onClose }) {
         canvasState: null,
       });
 
-      toast.success("Project created successfully!");
+      toast.success('Project created successfully!');
 
       // Navigate to editor
       router.push(`/editor/${projectId}`);
     } catch (error) {
-      console.error("Error creating project:", error);
-      toast.error(
-        error.message || "Failed to create project. Please try again."
-      );
+      console.error('Error creating project:', error);
+      toast.error(error.message || 'Failed to create project. Please try again.');
     } finally {
       setIsUploading(false);
     }
@@ -121,7 +119,7 @@ export function NewProjectModal({ isOpen, onClose }) {
   const handleClose = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
-    setProjectTitle("");
+    setProjectTitle('');
     setIsUploading(false);
     onClose();
   };
@@ -137,10 +135,7 @@ export function NewProjectModal({ isOpen, onClose }) {
                   Create New Project
                 </DialogTitle>
                 {isFree && (
-                  <Badge
-                    variant="secondary"
-                    className="bg-slate-700 text-white/70"
-                  >
+                  <Badge variant="secondary" className="bg-slate-700 text-white/70">
                     {currentProjectCount}/3 projects
                   </Badge>
                 )}
@@ -155,13 +150,11 @@ export function NewProjectModal({ isOpen, onClose }) {
                 <Crown className="h-5 w-5 text-amber-400" />
                 <AlertDescription className="text-amber-300/80">
                   <div className="font-semibold text-amber-400 mb-1">
-                    {currentProjectCount === 2
-                      ? "Last Free Project"
-                      : "Project Limit Reached"}
+                    {currentProjectCount === 2 ? 'Last Free Project' : 'Project Limit Reached'}
                   </div>
                   {currentProjectCount === 2
-                    ? "This will be your last free project. Upgrade to Pixxel Pro for unlimited projects."
-                    : "Free plan is limited to 3 projects. Upgrade to Pixxel Pro to create more projects."}
+                    ? 'This will be your last free project. Upgrade to Pixxel Pro for unlimited projects.'
+                    : 'Free plan is limited to 3 projects. Upgrade to Pixxel Pro to create more projects.'}
                 </AlertDescription>
               </Alert>
             )}
@@ -172,23 +165,21 @@ export function NewProjectModal({ isOpen, onClose }) {
                 {...getRootProps()}
                 className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
                   isDragActive
-                    ? "border-cyan-400 bg-cyan-400/5"
-                    : "border-white/20 hover:border-white/40"
-                } ${!canCreate ? "opacity-50 pointer-events-none" : ""}`}
+                    ? 'border-cyan-400 bg-cyan-400/5'
+                    : 'border-white/20 hover:border-white/40'
+                } ${!canCreate ? 'opacity-50 pointer-events-none' : ''}`}
               >
                 <input {...getInputProps()} />
                 <Upload className="h-12 w-12 text-white/50 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">
-                  {isDragActive ? "Drop your image here" : "Upload an Image"}
+                  {isDragActive ? 'Drop your image here' : 'Upload an Image'}
                 </h3>
                 <p className="text-white/70 mb-4">
                   {canCreate
-                    ? "Drag and drop your image, or click to browse"
-                    : "Upgrade to Pro to create more projects"}
+                    ? 'Drag and drop your image, or click to browse'
+                    : 'Upgrade to Pro to create more projects'}
                 </p>
-                <p className="text-sm text-white/50">
-                  Supports PNG, JPG, WEBP up to 20MB
-                </p>
+                <p className="text-sm text-white/50">Supports PNG, JPG, WEBP up to 20MB</p>
               </div>
             ) : (
               <div className="space-y-6">
@@ -205,7 +196,7 @@ export function NewProjectModal({ isOpen, onClose }) {
                     onClick={() => {
                       setSelectedFile(null);
                       setPreviewUrl(null);
-                      setProjectTitle("");
+                      setProjectTitle('');
                     }}
                     className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white"
                   >
@@ -233,9 +224,7 @@ export function NewProjectModal({ isOpen, onClose }) {
                   <div className="flex items-center gap-3">
                     <ImageIcon className="h-5 w-5 text-cyan-400" />
                     <div>
-                      <p className="text-white font-medium">
-                        {selectedFile.name}
-                      </p>
+                      <p className="text-white font-medium">{selectedFile.name}</p>
                       <p className="text-white/70 text-sm">
                         {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
@@ -267,7 +256,7 @@ export function NewProjectModal({ isOpen, onClose }) {
                   Creating...
                 </>
               ) : (
-                "Create Project"
+                'Create Project'
               )}
             </Button>
           </DialogFooter>

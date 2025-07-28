@@ -1,17 +1,9 @@
-import { useIntersectionObserver } from "@/hooks/use-landing-hooks";
-import { useAuth } from "@clerk/nextjs";
-import { useState } from "react";
-import { Button } from "./ui/button";
+import { useIntersectionObserver } from '@/hooks/use-landing-hooks';
+import { useAuth } from '@clerk/nextjs';
+import { useState } from 'react';
+import { Button } from './ui/button';
 
-const PricingCard = ({
-  id,
-  plan,
-  price,
-  features,
-  featured = false,
-  planId,
-  buttonText,
-}) => {
+const PricingCard = ({ id, plan, price, features, featured = false, planId, buttonText }) => {
   const [ref, isVisible] = useIntersectionObserver();
   const [isHovered, setIsHovered] = useState(false);
   const { has } = useAuth();
@@ -26,12 +18,12 @@ const PricingCard = ({
       if (window.Clerk && window.Clerk.__internal_openCheckout) {
         await window.Clerk.__internal_openCheckout({
           planId: planId,
-          planPeriod: "month",
-          subscriberType: "user",
+          planPeriod: 'month',
+          subscriberType: 'user',
         });
       }
     } catch (error) {
-      console.error("Checkout error:", error);
+      console.error('Checkout error:', error);
     }
   };
 
@@ -40,10 +32,10 @@ const PricingCard = ({
       ref={ref}
       className={`relative backdrop-blur-lg border rounded-3xl p-8 transition-all duration-700 cursor-pointer ${
         featured
-          ? "bg-gradient-to-b from-blue-500/20 to-purple-600/20 border-blue-400/50 scale-105"
-          : "bg-white/5 border-white/10"
-      } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${
-        isHovered ? "transform scale-115 rotate-1 z-10" : ""
+          ? 'bg-gradient-to-b from-blue-500/20 to-purple-600/20 border-blue-400/50 scale-105'
+          : 'bg-white/5 border-white/10'
+      } ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} ${
+        isHovered ? 'transform scale-115 rotate-1 z-10' : ''
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -73,13 +65,13 @@ const PricingCard = ({
         </ul>
 
         <Button
-          variant={featured ? "primary" : "glass"}
+          variant={featured ? 'primary' : 'glass'}
           size="xl"
           className="w-full"
           onClick={handlePopup}
           disabled={isCurrentPlan || !planId}
         >
-          {isCurrentPlan ? "Current Plan" : buttonText}
+          {isCurrentPlan ? 'Current Plan' : buttonText}
         </Button>
       </div>
     </div>
@@ -90,33 +82,33 @@ const PricingCard = ({
 const PricingSection = () => {
   const plans = [
     {
-      id: "free_user",
-      plan: "Free",
+      id: 'free_user',
+      plan: 'Free',
       price: 0,
       features: [
-        "3 projects maximum",
-        "20 exports per month",
-        "Basic crop & resize",
-        "Color adjustments",
-        "Text Tool",
+        '3 projects maximum',
+        '20 exports per month',
+        'Basic crop & resize',
+        'Color adjustments',
+        'Text Tool',
       ],
-      buttonText: "Get Started Free",
+      buttonText: 'Get Started Free',
     },
     {
-      id: "pro",
-      plan: "Pro",
+      id: 'pro',
+      plan: 'Pro',
       price: 12,
       features: [
-        "Unlimited projects",
-        "Unlimited exports",
-        "All Editing Tools",
-        "AI Background Remover",
-        "AI Image Extender",
-        "AI Retouch, Upscaler and more",
+        'Unlimited projects',
+        'Unlimited exports',
+        'All Editing Tools',
+        'AI Background Remover',
+        'AI Image Extender',
+        'AI Retouch, Upscaler and more',
       ],
       featured: true,
-      planId: "cplan_2ywZwXjYQQipWYxjCmFZCgCgsTZ",
-      buttonText: "Upgrade to Pro",
+      planId: 'cplan_2ywZwXjYQQipWYxjCmFZCgCgsTZ',
+      buttonText: 'Upgrade to Pro',
     },
   ];
 
@@ -125,14 +117,13 @@ const PricingSection = () => {
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-5xl font-bold text-white mb-6">
-            Simple{" "}
+            Simple{' '}
             <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
               Pricing
             </span>
           </h2>
           <p className="text-xl text-gray-300">
-            Start free and upgrade when you need more power. No hidden fees,
-            cancel anytime.
+            Start free and upgrade when you need more power. No hidden fees, cancel anytime.
           </p>
         </div>
 

@@ -1,16 +1,14 @@
-import { Edit, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { formatDistanceToNow } from "date-fns";
-import { useConvexMutation } from "@/hooks/use-convex-query";
-import { api } from "@/convex/_generated/api";
-import { toast } from "sonner";
+import { Edit, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { formatDistanceToNow } from 'date-fns';
+import { useConvexMutation } from '@/hooks/use-convex-query';
+import { api } from '@/convex/_generated/api';
+import { toast } from 'sonner';
 
 export default function ProjectCard({ project, onEdit }) {
-  const { mutate: deleteProject, isLoading } = useConvexMutation(
-    api.projects.deleteProject
-  );
+  const { mutate: deleteProject, isLoading } = useConvexMutation(api.projects.deleteProject);
 
   const lastUpdated = formatDistanceToNow(new Date(project.updatedAt), {
     addSuffix: true,
@@ -18,16 +16,16 @@ export default function ProjectCard({ project, onEdit }) {
 
   const handleDelete = async () => {
     const confirmed = confirm(
-      `Are you sure you want to delete "${project.title}"? This action cannot be undone.`
+      `Are you sure you want to delete "${project.title}"? This action cannot be undone.`,
     );
 
     if (confirmed) {
       try {
         await deleteProject({ projectId: project._id });
-        toast.success("Project deleted successfully");
+        toast.success('Project deleted successfully');
       } catch (error) {
-        console.error("Error deleting project:", error);
-        toast.error("Failed to delete project. Please try again.");
+        console.error('Error deleting project:', error);
+        toast.error('Failed to delete project. Please try again.');
       }
     }
   };
@@ -65,16 +63,11 @@ export default function ProjectCard({ project, onEdit }) {
 
       {/* Project Info */}
       <CardContent className="pb-6">
-        <h3 className="font-semibold text-white mb-1 truncate">
-          {project.title}
-        </h3>
+        <h3 className="font-semibold text-white mb-1 truncate">{project.title}</h3>
 
         <div className="flex items-center justify-between text-sm text-white/70">
           <span>Updated {lastUpdated}</span>
-          <Badge
-            variant="secondary"
-            className="text-xs bg-slate-700 text-white/70"
-          >
+          <Badge variant="secondary" className="text-xs bg-slate-700 text-white/70">
             {project.width} × {project.height}
           </Badge>
         </div>

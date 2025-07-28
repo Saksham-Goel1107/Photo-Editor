@@ -1,19 +1,16 @@
-import { useCanvas } from "@/context/context";
-import { api } from "@/convex/_generated/api";
-import { useConvexMutation } from "@/hooks/use-convex-query";
-import { Canvas, FabricImage } from "fabric";
-import React, { useEffect, useRef, useState } from "react";
+import { useCanvas } from '@/context/context';
+import { api } from '@/convex/_generated/api';
+import { useConvexMutation } from '@/hooks/use-convex-query';
+import { Canvas, FabricImage } from 'fabric';
+import React, { useEffect, useRef, useState } from 'react';
 
 function CanvasEditor({ project }) {
   const canvasRef = useRef();
   const containerRef = useRef();
-  const { canvasEditor, setCanvasEditor, activeTool, onToolChange } =
-    useCanvas();
+  const { canvasEditor, setCanvasEditor, activeTool, onToolChange } = useCanvas();
   const [isLoading, setIsLoading] = useState(true);
 
-  const { mutate: updateProject } = useConvexMutation(
-    api.projects.updateProject
-  );
+  const { mutate: updateProject } = useConvexMutation(api.projects.updateProject);
 
   const calculateViewportScale = () => {
     if (!containerRef.current || !project) return 1;
@@ -35,13 +32,13 @@ function CanvasEditor({ project }) {
       const canvas = new Canvas(canvasRef.current, {
         width: project.width,
         height: project.height,
-        backgroundColor: "#ffffff",
+        backgroundColor: '#ffffff',
         preserveObjectStacking: true,
         controlsAboveOverlay: true,
         selection: true,
-        hoverCursor: "move",
-        moveCursor: "move",
-        defaultCursor: "default",
+        hoverCursor: 'move',
+        moveCursor: 'move',
+        defaultCursor: 'default',
         allowTouchScrolling: false,
         renderOnAddRemove: true,
         skipTargetFind: false,
@@ -53,7 +50,7 @@ function CanvasEditor({ project }) {
           width: project.width * viewportScale,
           height: project.height * viewportScale,
         },
-        { backstoreOnly: false }
+        { backstoreOnly: false },
       );
 
       canvas.setZoom(viewportScale);
@@ -71,7 +68,7 @@ function CanvasEditor({ project }) {
         try {
           const imageUrl = project.currentImageUrl || project.originalImageUrl;
           const fabricImage = await FabricImage.fromURL(imageUrl, {
-            crossOrigin: "anonymous",
+            crossOrigin: 'anonymous',
           });
 
           const imgAspectRatio = fabricImage.width / fabricImage.height;
@@ -89,8 +86,8 @@ function CanvasEditor({ project }) {
           fabricImage.set({
             left: project.width / 2,
             top: project.height / 2,
-            originX: "center",
-            originY: "center",
+            originX: 'center',
+            originY: 'center',
             scaleX,
             scaleY,
             selectable: true,
@@ -100,7 +97,7 @@ function CanvasEditor({ project }) {
           canvas.add(fabricImage);
           canvas.centerObject(fabricImage);
         } catch (error) {
-          console.error("Error loading project image:", error);
+          console.error('Error loading project image:', error);
         }
       }
 
@@ -110,7 +107,7 @@ function CanvasEditor({ project }) {
           await canvas.loadFromJSON(project.canvasState);
           canvas.requestRenderAll();
         } catch (error) {
-          console.error("Error loading canvas state:", error);
+          console.error('Error loading canvas state:', error);
         }
       }
 
@@ -120,7 +117,7 @@ function CanvasEditor({ project }) {
 
       setTimeout(() => {
         // workaround for initial resize issues
-        window.dispatchEvent(new Event("resize"));
+        window.dispatchEvent(new Event('resize'));
       }, 500);
 
       setIsLoading(false);
@@ -146,7 +143,7 @@ function CanvasEditor({ project }) {
         canvasState: canvasJSON,
       });
     } catch (error) {
-      console.error("Error saving canvas state:", error);
+      console.error('Error saving canvas state:', error);
     }
   };
 
@@ -161,15 +158,15 @@ function CanvasEditor({ project }) {
       }, 2000);
     };
 
-    canvasEditor.on("object:modified", handleCanvasChange);
-    canvasEditor.on("object:added", handleCanvasChange);
-    canvasEditor.on("object:removed", handleCanvasChange);
+    canvasEditor.on('object:modified', handleCanvasChange);
+    canvasEditor.on('object:added', handleCanvasChange);
+    canvasEditor.on('object:removed', handleCanvasChange);
 
     return () => {
       clearTimeout(saveTimeout);
-      canvasEditor.off("object:modified", handleCanvasChange);
-      canvasEditor.off("object:added", handleCanvasChange);
-      canvasEditor.off("object:removed", handleCanvasChange);
+      canvasEditor.off('object:modified', handleCanvasChange);
+      canvasEditor.off('object:added', handleCanvasChange);
+      canvasEditor.off('object:removed', handleCanvasChange);
     };
   }, [canvasEditor]);
 
@@ -177,13 +174,13 @@ function CanvasEditor({ project }) {
     if (!canvasEditor) return;
 
     switch (activeTool) {
-      case "crop":
-        canvasEditor.defaultCursor = "crosshair";
-        canvasEditor.hoverCursor = "crosshair";
+      case 'crop':
+        canvasEditor.defaultCursor = 'crosshair';
+        canvasEditor.hoverCursor = 'crosshair';
         break;
       default:
-        canvasEditor.defaultCursor = "default";
-        canvasEditor.hoverCursor = "move";
+        canvasEditor.defaultCursor = 'default';
+        canvasEditor.hoverCursor = 'move';
     }
   }, [canvasEditor, activeTool]);
 
@@ -197,15 +194,15 @@ function CanvasEditor({ project }) {
           width: project.width * newScale,
           height: project.height * newScale,
         },
-        { backstoreOnly: false }
+        { backstoreOnly: false },
       );
       canvasEditor.setZoom(newScale);
       canvasEditor.calcOffset();
       canvasEditor.requestRenderAll();
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [canvasEditor, project]);
 
   // Handle automatic tab switching when text is selected
@@ -214,17 +211,17 @@ function CanvasEditor({ project }) {
 
     const handleSelection = (e) => {
       const selectedObject = e.selected?.[0];
-      if (selectedObject && selectedObject.type === "i-text") {
-        onToolChange("text");
+      if (selectedObject && selectedObject.type === 'i-text') {
+        onToolChange('text');
       }
     };
 
-    canvasEditor.on("selection:created", handleSelection);
-    canvasEditor.on("selection:updated", handleSelection);
+    canvasEditor.on('selection:created', handleSelection);
+    canvasEditor.on('selection:updated', handleSelection);
 
     return () => {
-      canvasEditor.off("selection:created", handleSelection);
-      canvasEditor.off("selection:updated", handleSelection);
+      canvasEditor.off('selection:created', handleSelection);
+      canvasEditor.off('selection:updated', handleSelection);
     };
   }, [canvasEditor, onToolChange]);
 
@@ -241,8 +238,8 @@ function CanvasEditor({ project }) {
             linear-gradient(-45deg, #64748b 25%, transparent 25%),
             linear-gradient(45deg, transparent 75%, #64748b 75%),
             linear-gradient(-45deg, transparent 75%, #64748b 75%)`,
-          backgroundSize: "20px 20px",
-          backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
+          backgroundSize: '20px 20px',
+          backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
         }}
       />
 

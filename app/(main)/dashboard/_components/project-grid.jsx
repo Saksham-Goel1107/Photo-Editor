@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useRouter } from "next/navigation";
-import ProjectCard from "./project-card";
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import ProjectCard from './project-card';
 
 export function ProjectGrid({ projects }) {
   const router = useRouter();

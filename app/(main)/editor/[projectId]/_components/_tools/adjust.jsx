@@ -1,80 +1,80 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
-import { RotateCcw } from "lucide-react";
-import { filters } from "fabric";
-import { useCanvas } from "@/context/context";
+import React, { useState, useEffect } from 'react';
+import { Slider } from '@/components/ui/slider';
+import { Button } from '@/components/ui/button';
+import { RotateCcw } from 'lucide-react';
+import { filters } from 'fabric';
+import { useCanvas } from '@/context/context';
 
 // Filter configurations
 const FILTER_CONFIGS = [
   {
-    key: "brightness",
-    label: "Brightness",
+    key: 'brightness',
+    label: 'Brightness',
     min: -100,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Brightness,
-    valueKey: "brightness",
+    valueKey: 'brightness',
     transform: (value) => value / 100,
   },
   {
-    key: "contrast",
-    label: "Contrast",
+    key: 'contrast',
+    label: 'Contrast',
     min: -100,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Contrast,
-    valueKey: "contrast",
+    valueKey: 'contrast',
     transform: (value) => value / 100,
   },
   {
-    key: "saturation",
-    label: "Saturation",
+    key: 'saturation',
+    label: 'Saturation',
     min: -100,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Saturation,
-    valueKey: "saturation",
+    valueKey: 'saturation',
     transform: (value) => value / 100,
   },
   {
-    key: "vibrance",
-    label: "Vibrance",
+    key: 'vibrance',
+    label: 'Vibrance',
     min: -100,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Vibrance,
-    valueKey: "vibrance",
+    valueKey: 'vibrance',
     transform: (value) => value / 100,
   },
   {
-    key: "blur",
-    label: "Blur",
+    key: 'blur',
+    label: 'Blur',
     min: 0,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Blur,
-    valueKey: "blur",
+    valueKey: 'blur',
     transform: (value) => value / 100,
   },
   {
-    key: "hue",
-    label: "Hue",
+    key: 'hue',
+    label: 'Hue',
     min: -180,
     max: 180,
     step: 1,
     defaultValue: 0,
     filterClass: filters.HueRotation,
-    valueKey: "rotation",
+    valueKey: 'rotation',
     transform: (value) => value * (Math.PI / 180),
-    suffix: "°",
+    suffix: '°',
   },
 ];
 
@@ -92,9 +92,9 @@ export function AdjustControls() {
   const getActiveImage = () => {
     if (!canvasEditor) return null;
     const activeObject = canvasEditor.getActiveObject();
-    if (activeObject && activeObject.type === "image") return activeObject;
+    if (activeObject && activeObject.type === 'image') return activeObject;
     const objects = canvasEditor.getObjects();
-    return objects.find((obj) => obj.type === "image") || null;
+    return objects.find((obj) => obj.type === 'image') || null;
   };
 
   const applyFilters = async (newValues) => {
@@ -113,7 +113,7 @@ export function AdjustControls() {
           filtersToApply.push(
             new config.filterClass({
               [config.valueKey]: transformedValue,
-            })
+            }),
           );
         }
       });
@@ -126,7 +126,7 @@ export function AdjustControls() {
         setTimeout(resolve, 50);
       });
     } catch (error) {
-      console.error("Error applying filters:", error);
+      console.error('Error applying filters:', error);
     } finally {
       setIsApplying(false);
     }
@@ -152,15 +152,11 @@ export function AdjustControls() {
     const extractedValues = { ...DEFAULT_VALUES };
 
     imageObject.filters.forEach((filter) => {
-      const config = FILTER_CONFIGS.find(
-        (c) => c.filterClass.name === filter.constructor.name
-      );
+      const config = FILTER_CONFIGS.find((c) => c.filterClass.name === filter.constructor.name);
       if (config) {
         const filterValue = filter[config.valueKey];
-        if (config.key === "hue") {
-          extractedValues[config.key] = Math.round(
-            filterValue * (180 / Math.PI)
-          );
+        if (config.key === 'hue') {
+          extractedValues[config.key] = Math.round(filterValue * (180 / Math.PI));
         } else {
           extractedValues[config.key] = Math.round(filterValue * 100);
         }
@@ -181,9 +177,7 @@ export function AdjustControls() {
   if (!canvasEditor) {
     return (
       <div className="p-4">
-        <p className="text-white/70 text-sm">
-          Load an image to start adjusting
-        </p>
+        <p className="text-white/70 text-sm">Load an image to start adjusting</p>
       </div>
     );
   }
@@ -192,9 +186,7 @@ export function AdjustControls() {
   if (!activeImage) {
     return (
       <div className="p-4">
-        <p className="text-white/70 text-sm">
-          Select an image to adjust filters
-        </p>
+        <p className="text-white/70 text-sm">Select an image to adjust filters</p>
       </div>
     );
   }
@@ -222,7 +214,7 @@ export function AdjustControls() {
             <label className="text-sm text-white">{config.label}</label>
             <span className="text-xs text-white/70">
               {filterValues[config.key]}
-              {config.suffix || ""}
+              {config.suffix || ''}
             </span>
           </div>
           <Slider
@@ -239,8 +231,7 @@ export function AdjustControls() {
       {/* Info */}
       <div className="mt-6 p-3 bg-slate-700/50 rounded-lg">
         <p className="text-xs text-white/70">
-          Adjustments are applied in real-time. Use the Reset button to restore
-          original values.
+          Adjustments are applied in real-time. Use the Reset button to restore original values.
         </p>
       </div>
 
@@ -248,9 +239,7 @@ export function AdjustControls() {
       {isApplying && (
         <div className="flex items-center justify-center py-2">
           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-400"></div>
-          <span className="ml-2 text-xs text-white/70">
-            Applying filters...
-          </span>
+          <span className="ml-2 text-xs text-white/70">Applying filters...</span>
         </div>
       )}
     </div>

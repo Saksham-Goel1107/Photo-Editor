@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import FeaturesSection from "@/components/features";
-import InteractiveStats from "@/components/interactive-stats";
-import PricingSection from "@/components/pricing";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import FeaturesSection from '@/components/features';
+import InteractiveStats from '@/components/interactive-stats';
+import PricingSection from '@/components/pricing';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
 
 // Hero Section Component
 const HeroSection = () => {
@@ -21,7 +21,7 @@ const HeroSection = () => {
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="text-center z-10 px-6">
         <div
-          className={`transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+          className={`transition-all duration-1000 ${textVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           <h1 className="text-6xl md:text-9xl font-black mb-6 tracking-tight">
             <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent animate-pulse">
@@ -32,9 +32,8 @@ const HeroSection = () => {
           </h1>
 
           <p className="text-xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Professional image editing powered by AI. Crop, resize, adjust
-            colors, remove backgrounds, and enhance your images with
-            cutting-edge technology.
+            Professional image editing powered by AI. Crop, resize, adjust colors, remove
+            backgrounds, and enhance your images with cutting-edge technology.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
@@ -52,13 +51,11 @@ const HeroSection = () => {
         {/* 3D Demo Interface */}
         <div
           className={`relative max-w-4xl mx-auto transition-all duration-1000 ${
-            textVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-20"
-          } ${demoHovered ? "transform scale-105 rotate-y-6" : ""}`}
+            textVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+          } ${demoHovered ? 'transform scale-105 rotate-y-6' : ''}`}
           onMouseEnter={() => setDemoHovered(true)}
           onMouseLeave={() => setDemoHovered(false)}
-          style={{ perspective: "1000px" }}
+          style={{ perspective: '1000px' }}
         >
           <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-3xl p-6 transform-gpu">
             <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-8 min-h-96">
@@ -73,10 +70,10 @@ const HeroSection = () => {
 
               <div className="grid grid-cols-4 gap-4 mb-6">
                 {[
-                  { icon: "✂️", label: "Crop" },
-                  { icon: "📐", label: "Resize" },
-                  { icon: "🎨", label: "Adjust" },
-                  { icon: "🤖", label: "AI Tools" },
+                  { icon: '✂️', label: 'Crop' },
+                  { icon: '📐', label: 'Resize' },
+                  { icon: '🎨', label: 'Adjust' },
+                  { icon: '🤖', label: 'AI Tools' },
                 ].map((tool, index) => (
                   <div
                     key={index}
@@ -115,14 +112,14 @@ const App = () => {
       <section className="py-20 text-center">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-5xl font-bold mb-6">
-            Ready to{" "}
+            Ready to{' '}
             <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
               Create Something Amazing?
             </span>
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Join thousands of creators who are already using AI to transform
-            their images and bring their vision to life.
+            Join thousands of creators who are already using AI to transform their images and bring
+            their vision to life.
           </p>
           <Link href="/dashboard">
             <Button variant="primary" size="xl">

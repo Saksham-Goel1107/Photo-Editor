@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import React from "react";
-import { X, Crown, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import React from 'react';
+import { X, Crown, Zap } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { PricingTable } from "@clerk/nextjs";
+} from '@/components/ui/dialog';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { PricingTable } from '@clerk/nextjs';
 
 export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
   const getToolName = (toolId) => {
     const toolNames = {
-      background: "AI Background Tools",
-      ai_extender: "AI Image Extender",
-      ai_edit: "AI Editor",
+      background: 'AI Background Tools',
+      ai_extender: 'AI Image Extender',
+      ai_edit: 'AI Editor',
     };
-    return toolNames[toolId] || "Premium Feature";
+    return toolNames[toolId] || 'Premium Feature';
   };
 
   return (
@@ -29,9 +29,7 @@ export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
         <DialogHeader>
           <div className="flex items-center gap-3">
             <Crown className="h-6 w-6 text-yellow-500" />
-            <DialogTitle className="text-2xl font-bold text-white">
-              Upgrade to Pro
-            </DialogTitle>
+            <DialogTitle className="text-2xl font-bold text-white">Upgrade to Pro</DialogTitle>
           </div>
         </DialogHeader>
 
@@ -54,11 +52,7 @@ export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
         </div>
 
         <DialogFooter className="justify-center">
-          <Button
-            variant="ghost"
-            onClick={onClose}
-            className="text-white/70 hover:text-white"
-          >
+          <Button variant="ghost" onClick={onClose} className="text-white/70 hover:text-white">
             Maybe Later
           </Button>
         </DialogFooter>

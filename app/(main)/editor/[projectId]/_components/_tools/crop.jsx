@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Crop,
   CheckCheck,
@@ -11,21 +11,21 @@ import {
   RectangleVertical,
   Smartphone,
   Maximize,
-} from "lucide-react";
-import { useCanvas } from "@/context/context";
-import { FabricImage, Rect } from "fabric";
+} from 'lucide-react';
+import { useCanvas } from '@/context/context';
+import { FabricImage, Rect } from 'fabric';
 
 const ASPECT_RATIOS = [
-  { label: "Freeform", value: null, icon: Maximize },
-  { label: "Square", value: 1, icon: Square, ratio: "1:1" },
+  { label: 'Freeform', value: null, icon: Maximize },
+  { label: 'Square', value: 1, icon: Square, ratio: '1:1' },
   {
-    label: "Widescreen",
+    label: 'Widescreen',
     value: 16 / 9,
     icon: RectangleHorizontal,
-    ratio: "16:9",
+    ratio: '16:9',
   },
-  { label: "Portrait", value: 4 / 5, icon: RectangleVertical, ratio: "4:5" },
-  { label: "Story", value: 9 / 16, icon: Smartphone, ratio: "9:16" },
+  { label: 'Portrait', value: 4 / 5, icon: RectangleVertical, ratio: '4:5' },
+  { label: 'Story', value: 9 / 16, icon: Smartphone, ratio: '9:16' },
 ];
 
 export function CropContent() {
@@ -42,12 +42,12 @@ export function CropContent() {
     if (!canvasEditor) return null;
 
     const activeObject = canvasEditor.getActiveObject();
-    if (activeObject && activeObject.type === "image") {
+    if (activeObject && activeObject.type === 'image') {
       return activeObject;
     }
 
     const objects = canvasEditor.getObjects();
-    return objects.find((obj) => obj.type === "image") || null;
+    return objects.find((obj) => obj.type === 'image') || null;
   };
 
   // Remove all Rect objects from canvas (cleanup crop rectangles)
@@ -55,7 +55,7 @@ export function CropContent() {
     if (!canvasEditor) return;
 
     const objects = canvasEditor.getObjects();
-    const rectsToRemove = objects.filter((obj) => obj.type === "rect");
+    const rectsToRemove = objects.filter((obj) => obj.type === 'rect');
 
     rectsToRemove.forEach((rect) => {
       canvasEditor.remove(rect);
@@ -66,12 +66,12 @@ export function CropContent() {
 
   // Initialize crop mode when tool becomes active
   useEffect(() => {
-    if (activeTool === "crop" && canvasEditor && isCropMode) {
+    if (activeTool === 'crop' && canvasEditor && isCropMode) {
       const image = getActiveImage();
       if (image) {
         initializeCropMode(image);
       }
-    } else if (activeTool !== "crop" && isCropMode) {
+    } else if (activeTool !== 'crop' && isCropMode) {
       exitCropMode();
     }
   }, [activeTool, canvasEditor]);
@@ -131,36 +131,34 @@ export function CropContent() {
       top: bounds.top + bounds.height * 0.1,
       width: bounds.width * 0.8,
       height: bounds.height * 0.8,
-      fill: "transparent",
-      stroke: "#00bcd4",
+      fill: 'transparent',
+      stroke: '#00bcd4',
       strokeWidth: 2,
       strokeDashArray: [5, 5],
       selectable: true,
       evented: true,
-      name: "cropRect",
-      cornerColor: "#00bcd4",
+      name: 'cropRect',
+      cornerColor: '#00bcd4',
       cornerSize: 12,
       transparentCorners: false,
-      cornerStyle: "circle",
-      borderColor: "#00bcd4",
+      cornerStyle: 'circle',
+      borderColor: '#00bcd4',
       borderScaleFactor: 1,
       // Add a custom property to identify crop rectangles
       isCropRectangle: true,
     });
 
     // Add custom control behavior
-    cropRectangle.on("scaling", (e) => {
+    cropRectangle.on('scaling', (e) => {
       const rect = e.target;
 
       // Apply aspect ratio constraint if selected
       if (selectedRatio && selectedRatio !== null) {
-        const currentRatio =
-          (rect.width * rect.scaleX) / (rect.height * rect.scaleY);
+        const currentRatio = (rect.width * rect.scaleX) / (rect.height * rect.scaleY);
         if (Math.abs(currentRatio - selectedRatio) > 0.01) {
           // Adjust height to maintain ratio
-          const newHeight =
-            (rect.width * rect.scaleX) / selectedRatio / rect.scaleY;
-          rect.set("height", newHeight);
+          const newHeight = (rect.width * rect.scaleX) / selectedRatio / rect.scaleY;
+          rect.set('height', newHeight);
         }
       }
 
@@ -208,7 +206,7 @@ export function CropContent() {
       canvasEditor.requestRenderAll();
     }
 
-    console.log("Crop mode cleanup complete");
+    console.log('Crop mode cleanup complete');
   };
 
   // Apply aspect ratio constraint to crop rectangle
@@ -242,10 +240,7 @@ export function CropContent() {
       const cropX = Math.max(0, cropBounds.left - imageBounds.left);
       const cropY = Math.max(0, cropBounds.top - imageBounds.top);
       const cropWidth = Math.min(cropBounds.width, imageBounds.width - cropX);
-      const cropHeight = Math.min(
-        cropBounds.height,
-        imageBounds.height - cropY
-      );
+      const cropHeight = Math.min(cropBounds.height, imageBounds.height - cropY);
 
       // Convert to image coordinate system (accounting for image scaling)
       const imageScaleX = selectedImage.scaleX || 1;
@@ -260,8 +255,8 @@ export function CropContent() {
       const croppedImage = new FabricImage(selectedImage._element, {
         left: cropBounds.left + cropBounds.width / 2,
         top: cropBounds.top + cropBounds.height / 2,
-        originX: "center",
-        originY: "center",
+        originX: 'center',
+        originY: 'center',
         selectable: true,
         evented: true,
         // Apply crop using Fabric.js crop properties
@@ -282,8 +277,8 @@ export function CropContent() {
       // Exit crop mode
       exitCropMode();
     } catch (error) {
-      console.error("Error applying crop:", error);
-      alert("Failed to apply crop. Please try again.");
+      console.error('Error applying crop:', error);
+      alert('Failed to apply crop. Please try again.');
       exitCropMode();
     }
   };
@@ -315,9 +310,7 @@ export function CropContent() {
       {/* Crop Mode Status */}
       {isCropMode && (
         <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-3">
-          <p className="text-cyan-400 text-sm font-medium">
-            ✂️ Crop Mode Active
-          </p>
+          <p className="text-cyan-400 text-sm font-medium">✂️ Crop Mode Active</p>
           <p className="text-cyan-300/80 text-xs mt-1">
             Adjust the blue rectangle to set crop area
           </p>
@@ -339,9 +332,7 @@ export function CropContent() {
       {/* Aspect Ratio Selection - Only show in crop mode */}
       {isCropMode && (
         <div>
-          <h3 className="text-sm font-medium text-white mb-3">
-            Crop Aspect Ratios
-          </h3>
+          <h3 className="text-sm font-medium text-white mb-3">Crop Aspect Ratios</h3>
           <div className="grid grid-cols-3 gap-2">
             {ASPECT_RATIOS.map((ratio) => {
               const IconComponent = ratio.icon;
@@ -351,15 +342,13 @@ export function CropContent() {
                   onClick={() => applyAspectRatio(ratio.value)}
                   className={`text-center p-3 border rounded-lg transition-colors cursor-pointer ${
                     selectedRatio === ratio.value
-                      ? "border-cyan-400 bg-cyan-400/10"
-                      : "border-white/20 hover:border-white/40 hover:bg-white/5"
+                      ? 'border-cyan-400 bg-cyan-400/10'
+                      : 'border-white/20 hover:border-white/40 hover:bg-white/5'
                   }`}
                 >
                   <IconComponent className="h-6 w-6 mx-auto mb-2 text-white" />
                   <div className="text-xs text-white">{ratio.label}</div>
-                  {ratio.ratio && (
-                    <div className="text-xs text-white/70">{ratio.ratio}</div>
-                  )}
+                  {ratio.ratio && <div className="text-xs text-white/70">{ratio.ratio}</div>}
                 </button>
               );
             })}

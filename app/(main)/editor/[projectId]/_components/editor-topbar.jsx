@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   ArrowLeft,
   RotateCcw,
@@ -19,61 +19,61 @@ import {
   Download,
   FileImage,
   Lock,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { useCanvas } from "@/context/context";
-import { usePlanAccess } from "@/hooks/use-plan-access";
-import { UpgradeModal } from "@/components/upgrade-modal";
-import { FabricImage } from "fabric";
-import { api } from "@/convex/_generated/api";
-import { useConvexMutation, useConvexQuery } from "@/hooks/use-convex-query";
-import { toast } from "sonner";
+} from '@/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
+import { useCanvas } from '@/context/context';
+import { usePlanAccess } from '@/hooks/use-plan-access';
+import { UpgradeModal } from '@/components/upgrade-modal';
+import { FabricImage } from 'fabric';
+import { api } from '@/convex/_generated/api';
+import { useConvexMutation, useConvexQuery } from '@/hooks/use-convex-query';
+import { toast } from 'sonner';
 
 const TOOLS = [
   {
-    id: "resize",
-    label: "Resize",
+    id: 'resize',
+    label: 'Resize',
     icon: Expand,
     isActive: true,
   },
   {
-    id: "crop",
-    label: "Crop",
+    id: 'crop',
+    label: 'Crop',
     icon: Crop,
   },
   {
-    id: "adjust",
-    label: "Adjust",
+    id: 'adjust',
+    label: 'Adjust',
     icon: Sliders,
   },
   {
-    id: "text",
-    label: "Text",
+    id: 'text',
+    label: 'Text',
     icon: Text,
   },
   {
-    id: "background",
-    label: "AI Background",
+    id: 'background',
+    label: 'AI Background',
     icon: Palette,
     proOnly: true,
   },
   {
-    id: "ai_extender",
-    label: "AI Image Extender",
+    id: 'ai_extender',
+    label: 'AI Image Extender',
     icon: Maximize2,
     proOnly: true,
   },
   {
-    id: "ai_edit",
-    label: "AI Editing",
+    id: 'ai_edit',
+    label: 'AI Editing',
     icon: Eye,
     proOnly: true,
   },
@@ -81,28 +81,28 @@ const TOOLS = [
 
 const EXPORT_FORMATS = [
   {
-    format: "PNG",
+    format: 'PNG',
     quality: 1.0,
-    label: "PNG (High Quality)",
-    extension: "png",
+    label: 'PNG (High Quality)',
+    extension: 'png',
   },
   {
-    format: "JPEG",
+    format: 'JPEG',
     quality: 0.9,
-    label: "JPEG (90% Quality)",
-    extension: "jpg",
+    label: 'JPEG (90% Quality)',
+    extension: 'jpg',
   },
   {
-    format: "JPEG",
+    format: 'JPEG',
     quality: 0.8,
-    label: "JPEG (80% Quality)",
-    extension: "jpg",
+    label: 'JPEG (80% Quality)',
+    extension: 'jpg',
   },
   {
-    format: "WEBP",
+    format: 'WEBP',
     quality: 0.9,
-    label: "WebP (90% Quality)",
-    extension: "webp",
+    label: 'WebP (90% Quality)',
+    extension: 'webp',
   },
 ];
 
@@ -123,7 +123,7 @@ export function EditorTopBar({ project }) {
 
   // Use the loading states from the hooks
   const { mutate: updateProject, isLoading: isSaving } = useConvexMutation(
-    api.projects.updateProject
+    api.projects.updateProject,
   );
   const { data: user } = useConvexQuery(api.users.getCurrentUser);
 
@@ -170,16 +170,16 @@ export function EditorTopBar({ project }) {
     };
 
     // Listen to canvas events that should trigger state save
-    canvasEditor.on("object:modified", handleCanvasModified);
-    canvasEditor.on("object:added", handleCanvasModified);
-    canvasEditor.on("object:removed", handleCanvasModified);
-    canvasEditor.on("path:created", handleCanvasModified);
+    canvasEditor.on('object:modified', handleCanvasModified);
+    canvasEditor.on('object:added', handleCanvasModified);
+    canvasEditor.on('object:removed', handleCanvasModified);
+    canvasEditor.on('path:created', handleCanvasModified);
 
     return () => {
-      canvasEditor.off("object:modified", handleCanvasModified);
-      canvasEditor.off("object:added", handleCanvasModified);
-      canvasEditor.off("object:removed", handleCanvasModified);
-      canvasEditor.off("path:created", handleCanvasModified);
+      canvasEditor.off('object:modified', handleCanvasModified);
+      canvasEditor.off('object:added', handleCanvasModified);
+      canvasEditor.off('object:removed', handleCanvasModified);
+      canvasEditor.off('path:created', handleCanvasModified);
     };
   }, [canvasEditor, isUndoRedoOperation]);
 
@@ -203,11 +203,11 @@ export function EditorTopBar({ project }) {
         await canvasEditor.loadFromJSON(JSON.parse(previousState));
         canvasEditor.requestRenderAll();
         setUndoStack(newUndoStack);
-        toast.success("Undid last action");
+        toast.success('Undid last action');
       }
     } catch (error) {
-      console.error("Error during undo:", error);
-      toast.error("Failed to undo action");
+      console.error('Error during undo:', error);
+      toast.error('Failed to undo action');
     } finally {
       setTimeout(() => setIsUndoRedoOperation(false), 100);
     }
@@ -233,18 +233,18 @@ export function EditorTopBar({ project }) {
         await canvasEditor.loadFromJSON(JSON.parse(nextState));
         canvasEditor.requestRenderAll();
         setRedoStack(newRedoStack);
-        toast.success("Redid last action");
+        toast.success('Redid last action');
       }
     } catch (error) {
-      console.error("Error during redo:", error);
-      toast.error("Failed to redo action");
+      console.error('Error during redo:', error);
+      toast.error('Failed to redo action');
     } finally {
       setTimeout(() => setIsUndoRedoOperation(false), 100);
     }
   };
 
   const handleBackToDashboard = () => {
-    router.push("/dashboard");
+    router.push('/dashboard');
   };
 
   // Handle tool change with access control
@@ -260,7 +260,7 @@ export function EditorTopBar({ project }) {
   // Manual save functionality
   const handleManualSave = async () => {
     if (!canvasEditor || !project) {
-      toast.error("Canvas not ready for saving");
+      toast.error('Canvas not ready for saving');
       return;
     }
 
@@ -270,23 +270,23 @@ export function EditorTopBar({ project }) {
         projectId: project._id,
         canvasState: canvasJSON,
       });
-      toast.success("Project saved successfully!");
+      toast.success('Project saved successfully!');
     } catch (error) {
-      console.error("Error saving project:", error);
-      toast.error("Failed to save project. Please try again.");
+      console.error('Error saving project:', error);
+      toast.error('Failed to save project. Please try again.');
     }
   };
 
   // Export canvas as image
   const handleExport = async (exportConfig) => {
     if (!canvasEditor || !project) {
-      toast.error("Canvas not ready for export");
+      toast.error('Canvas not ready for export');
       return;
     }
 
     // Check export limits for free users
     if (!canExport(user?.exportsThisMonth || 0)) {
-      setRestrictedTool("export");
+      setRestrictedTool('export');
       setShowUpgradeModal(true);
       return;
     }
@@ -325,7 +325,7 @@ export function EditorTopBar({ project }) {
       canvasEditor.requestRenderAll();
 
       // Download the image
-      const link = document.createElement("a");
+      const link = document.createElement('a');
       link.download = `${project.title}.${exportConfig.extension}`;
       link.href = dataURL;
       document.body.appendChild(link);
@@ -334,8 +334,8 @@ export function EditorTopBar({ project }) {
 
       toast.success(`Image exported as ${exportConfig.format}!`);
     } catch (error) {
-      console.error("Error exporting image:", error);
-      toast.error("Failed to export image. Please try again.");
+      console.error('Error exporting image:', error);
+      toast.error('Failed to export image. Please try again.');
     } finally {
       setIsExporting(false);
       setExportFormat(null);
@@ -345,7 +345,7 @@ export function EditorTopBar({ project }) {
   // Reset canvas to original state
   const handleResetToOriginal = async () => {
     if (!canvasEditor || !project || !project.originalImageUrl) {
-      toast.error("No original image found to reset to");
+      toast.error('No original image found to reset to');
       return;
     }
 
@@ -355,12 +355,12 @@ export function EditorTopBar({ project }) {
     try {
       // Clear canvas and reset state
       canvasEditor.clear();
-      canvasEditor.backgroundColor = "#ffffff";
+      canvasEditor.backgroundColor = '#ffffff';
       canvasEditor.backgroundImage = null;
 
       // Load original image
       const fabricImage = await FabricImage.fromURL(project.originalImageUrl, {
-        crossOrigin: "anonymous",
+        crossOrigin: 'anonymous',
       });
 
       // Calculate proper scaling
@@ -374,8 +374,8 @@ export function EditorTopBar({ project }) {
       fabricImage.set({
         left: project.width / 2,
         top: project.height / 2,
-        originX: "center",
-        originY: "center",
+        originX: 'center',
+        originY: 'center',
         scaleX: scale,
         scaleY: scale,
         selectable: true,
@@ -398,10 +398,10 @@ export function EditorTopBar({ project }) {
         backgroundRemoved: false,
       });
 
-      toast.success("Canvas reset to original image");
+      toast.success('Canvas reset to original image');
     } catch (error) {
-      console.error("Error resetting canvas:", error);
-      toast.error("Failed to reset canvas. Please try again.");
+      console.error('Error resetting canvas:', error);
+      toast.error('Failed to reset canvas. Please try again.');
     }
   };
 
@@ -497,10 +497,7 @@ export function EditorTopBar({ project }) {
                 </Button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent
-                align="end"
-                className="w-56 bg-slate-800 border-slate-700"
-              >
+              <DropdownMenuContent align="end" className="w-56 bg-slate-800 border-slate-700">
                 <div className="px-3 py-2 text-sm text-white/70">
                   Export Resolution: {project.width} × {project.height}px
                 </div>
@@ -517,8 +514,7 @@ export function EditorTopBar({ project }) {
                     <div className="flex-1">
                       <div className="font-medium">{config.label}</div>
                       <div className="text-xs text-white/50">
-                        {config.format} • {Math.round(config.quality * 100)}%
-                        quality
+                        {config.format} • {Math.round(config.quality * 100)}% quality
                       </div>
                     </div>
                   </DropdownMenuItem>
@@ -529,8 +525,7 @@ export function EditorTopBar({ project }) {
                 {/* Export Limit Info for Free Users */}
                 {isFree && (
                   <div className="px-3 py-2 text-xs text-white/50">
-                    Free Plan: {user?.exportsThisMonth || 0}/20 exports this
-                    month
+                    Free Plan: {user?.exportsThisMonth || 0}/20 exports this month
                     {(user?.exportsThisMonth || 0) >= 20 && (
                       <div className="text-amber-400 mt-1">
                         Upgrade to Pro for unlimited exports
@@ -555,20 +550,18 @@ export function EditorTopBar({ project }) {
               return (
                 <Button
                   key={tool.id}
-                  variant={isActive ? "default" : "ghost"}
+                  variant={isActive ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => handleToolChange(tool.id)}
                   className={`gap-2 relative ${
                     isActive
-                      ? "bg-blue-600 text-white hover:bg-blue-700"
-                      : "text-white hover:text-gray-300 hover:bg-gray-100"
-                  } ${!hasToolAccess ? "opacity-60" : ""}`}
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'text-white hover:text-gray-300 hover:bg-gray-100'
+                  } ${!hasToolAccess ? 'opacity-60' : ''}`}
                 >
                   <Icon className="h-4 w-4" />
                   {tool.label}
-                  {tool.proOnly && !hasToolAccess && (
-                    <Lock className="h-3 w-3 text-amber-400" />
-                  )}
+                  {tool.proOnly && !hasToolAccess && <Lock className="h-3 w-3 text-amber-400" />}
                 </Button>
               );
             })}
@@ -581,7 +574,7 @@ export function EditorTopBar({ project }) {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`text-white ${!canUndo ? "opacity-50 cursor-not-allowed" : "hover:bg-slate-700"}`}
+                className={`text-white ${!canUndo ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-700'}`}
                 onClick={handleUndo}
                 disabled={!canUndo || isUndoRedoOperation}
                 title={`Undo (${undoStack.length - 1} actions available)`}
@@ -591,7 +584,7 @@ export function EditorTopBar({ project }) {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`text-white ${!canRedo ? "opacity-50 cursor-not-allowed" : "hover:bg-slate-700"}`}
+                className={`text-white ${!canRedo ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-700'}`}
                 onClick={handleRedo}
                 disabled={!canRedo || isUndoRedoOperation}
                 title={`Redo (${redoStack.length} actions available)`}
@@ -612,8 +605,8 @@ export function EditorTopBar({ project }) {
         }}
         restrictedTool={restrictedTool}
         reason={
-          restrictedTool === "export"
-            ? "Free plan is limited to 20 exports per month. Upgrade to Pro for unlimited exports."
+          restrictedTool === 'export'
+            ? 'Free plan is limited to 20 exports per month. Upgrade to Pro for unlimited exports.'
             : undefined
         }
       />

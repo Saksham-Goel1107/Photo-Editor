@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useParams } from "next/navigation";
-import { useConvexQuery } from "@/hooks/use-convex-query";
-import { api } from "@/convex/_generated/api";
-import { Loader2, Monitor } from "lucide-react";
-import { EditorTopBar } from "./_components/editor-topbar";
-import { EditorSidebar } from "./_components/editor-sidebar";
-import CanvasEditor from "./_components/canvas";
-import { CanvasContext } from "@/context/context";
-import { RingLoader } from "react-spinners";
+import React, { useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useConvexQuery } from '@/hooks/use-convex-query';
+import { api } from '@/convex/_generated/api';
+import { Loader2, Monitor } from 'lucide-react';
+import { EditorTopBar } from './_components/editor-topbar';
+import { EditorSidebar } from './_components/editor-sidebar';
+import CanvasEditor from './_components/canvas';
+import { CanvasContext } from '@/context/context';
+import { RingLoader } from 'react-spinners';
 
 export default function EditorPage() {
   const params = useParams();
@@ -18,7 +18,7 @@ export default function EditorPage() {
   const [processingMessage, setProcessingMessage] = useState(null);
 
   // State for active tool
-  const [activeTool, setActiveTool] = useState("resize");
+  const [activeTool, setActiveTool] = useState('resize');
 
   // Get project data
   const {
@@ -42,12 +42,9 @@ export default function EditorPage() {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-2">
-            Project Not Found
-          </h1>
+          <h1 className="text-2xl font-bold text-white mb-2">Project Not Found</h1>
           <p className="text-white/70">
-            The project you're looking for doesn't exist or you don't have
-            access to it.
+            The project you're looking for doesn't exist or you don't have access to it.
           </p>
         </div>
       </div>
@@ -69,12 +66,8 @@ export default function EditorPage() {
       <div className="lg:hidden min-h-screen bg-slate-900 flex items-center justify-center p-6">
         <div className="text-center max-w-md">
           <Monitor className="h-16 w-16 text-cyan-400 mx-auto mb-6" />
-          <h1 className="text-2xl font-bold text-white mb-4">
-            Desktop Required
-          </h1>
-          <p className="text-white/70 text-lg mb-2">
-            This editor is only usable on desktop.
-          </p>
+          <h1 className="text-2xl font-bold text-white mb-4">Desktop Required</h1>
+          <p className="text-white/70 text-lg mb-2">This editor is only usable on desktop.</p>
           <p className="text-white/50 text-sm">
             Please use a larger screen to access the full editing experience.
           </p>

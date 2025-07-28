@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Slider } from '@/components/ui/slider';
 import {
   Type,
   Trash2,
@@ -14,20 +14,20 @@ import {
   AlignCenter,
   AlignRight,
   AlignJustify,
-} from "lucide-react";
-import { useCanvas } from "@/context/context";
-import { IText } from "fabric";
+} from 'lucide-react';
+import { useCanvas } from '@/context/context';
+import { IText } from 'fabric';
 
 const FONT_FAMILIES = [
-  "Arial",
-  "Arial Black",
-  "Helvetica",
-  "Times New Roman",
-  "Courier New",
-  "Georgia",
-  "Verdana",
-  "Comic Sans MS",
-  "Impact",
+  'Arial',
+  'Arial Black',
+  'Helvetica',
+  'Times New Roman',
+  'Courier New',
+  'Georgia',
+  'Verdana',
+  'Comic Sans MS',
+  'Impact',
 ];
 
 const FONT_SIZES = { min: 8, max: 120, default: 20 };
@@ -35,22 +35,22 @@ const FONT_SIZES = { min: 8, max: 120, default: 20 };
 export function TextControls() {
   const { canvasEditor } = useCanvas();
   const [selectedText, setSelectedText] = useState(null);
-  const [fontFamily, setFontFamily] = useState("Arial");
+  const [fontFamily, setFontFamily] = useState('Arial');
   const [fontSize, setFontSize] = useState(FONT_SIZES.default);
-  const [textColor, setTextColor] = useState("#000000");
-  const [textAlign, setTextAlign] = useState("left");
+  const [textColor, setTextColor] = useState('#000000');
+  const [textAlign, setTextAlign] = useState('left');
   const [_, setChanged] = useState(0);
 
   // Check if selected object is text
   const updateSelectedText = () => {
     if (!canvasEditor) return;
     const activeObject = canvasEditor.getActiveObject();
-    if (activeObject && activeObject.type === "i-text") {
+    if (activeObject && activeObject.type === 'i-text') {
       setSelectedText(activeObject);
-      setFontFamily(activeObject.fontFamily || "Arial");
+      setFontFamily(activeObject.fontFamily || 'Arial');
       setFontSize(activeObject.fontSize || FONT_SIZES.default);
-      setTextColor(activeObject.fill || "#000000");
-      setTextAlign(activeObject.textAlign || "left");
+      setTextColor(activeObject.fill || '#000000');
+      setTextAlign(activeObject.textAlign || 'left');
     } else {
       setSelectedText(null);
     }
@@ -66,14 +66,14 @@ export function TextControls() {
     const handleSelectionUpdated = () => updateSelectedText();
     const handleSelectionCleared = () => setSelectedText(null);
 
-    canvasEditor.on("selection:created", handleSelectionCreated);
-    canvasEditor.on("selection:updated", handleSelectionUpdated);
-    canvasEditor.on("selection:cleared", handleSelectionCleared);
+    canvasEditor.on('selection:created', handleSelectionCreated);
+    canvasEditor.on('selection:updated', handleSelectionUpdated);
+    canvasEditor.on('selection:cleared', handleSelectionCleared);
 
     return () => {
-      canvasEditor.off("selection:created", handleSelectionCreated);
-      canvasEditor.off("selection:updated", handleSelectionUpdated);
-      canvasEditor.off("selection:cleared", handleSelectionCleared);
+      canvasEditor.off('selection:created', handleSelectionCreated);
+      canvasEditor.off('selection:updated', handleSelectionUpdated);
+      canvasEditor.off('selection:cleared', handleSelectionCleared);
     };
   }, [canvasEditor]);
 
@@ -81,11 +81,11 @@ export function TextControls() {
   const addText = () => {
     if (!canvasEditor) return;
 
-    const text = new IText("Edit this text", {
+    const text = new IText('Edit this text', {
       left: canvasEditor.width / 2,
       top: canvasEditor.height / 2,
-      originX: "center",
-      originY: "center",
+      originX: 'center',
+      originY: 'center',
       fontFamily,
       fontSize: FONT_SIZES.default,
       fill: textColor,
@@ -117,7 +117,7 @@ export function TextControls() {
   const applyFontFamily = (family) => {
     if (!selectedText) return;
     setFontFamily(family);
-    selectedText.set("fontFamily", family);
+    selectedText.set('fontFamily', family);
     canvasEditor.requestRenderAll();
   };
 
@@ -126,7 +126,7 @@ export function TextControls() {
     if (!selectedText) return;
     const newSize = Array.isArray(size) ? size[0] : size;
     setFontSize(newSize);
-    selectedText.set("fontSize", newSize);
+    selectedText.set('fontSize', newSize);
     canvasEditor.requestRenderAll();
   };
 
@@ -134,7 +134,7 @@ export function TextControls() {
   const applyTextAlign = (alignment) => {
     if (!selectedText) return;
     setTextAlign(alignment);
-    selectedText.set("textAlign", alignment);
+    selectedText.set('textAlign', alignment);
     canvasEditor.requestRenderAll();
   };
 
@@ -142,7 +142,7 @@ export function TextControls() {
   const applyTextColor = (color) => {
     if (!selectedText) return;
     setTextColor(color);
-    selectedText.set("fill", color);
+    selectedText.set('fill', color);
     canvasEditor.requestRenderAll();
   };
 
@@ -151,22 +151,19 @@ export function TextControls() {
     if (!selectedText) return;
 
     switch (format) {
-      case "bold": {
-        const current = selectedText.fontWeight || "normal";
-        selectedText.set("fontWeight", current === "bold" ? "normal" : "bold");
+      case 'bold': {
+        const current = selectedText.fontWeight || 'normal';
+        selectedText.set('fontWeight', current === 'bold' ? 'normal' : 'bold');
         break;
       }
-      case "italic": {
-        const current = selectedText.fontStyle || "normal";
-        selectedText.set(
-          "fontStyle",
-          current === "italic" ? "normal" : "italic"
-        );
+      case 'italic': {
+        const current = selectedText.fontStyle || 'normal';
+        selectedText.set('fontStyle', current === 'italic' ? 'normal' : 'italic');
         break;
       }
-      case "underline": {
+      case 'underline': {
         const current = selectedText.underline || false;
-        selectedText.set("underline", !current);
+        selectedText.set('underline', !current);
         break;
       }
     }
@@ -189,9 +186,7 @@ export function TextControls() {
       <div className="space-y-4">
         <div>
           <h3 className="text-sm font-medium text-white mb-2">Add Text</h3>
-          <p className="text-xs text-white/70 mb-4">
-            Click to add editable text to your canvas
-          </p>
+          <p className="text-xs text-white/70 mb-4">Click to add editable text to your canvas</p>
         </div>
         <Button onClick={addText} className="w-full" variant="primary">
           <Type className="h-4 w-4 mr-2" />
@@ -202,9 +197,7 @@ export function TextControls() {
       {/* Text Editing Controls - Show only when text is selected */}
       {selectedText && (
         <div className="border-t border-white/10 pt-6">
-          <h3 className="text-sm font-medium text-white mb-4">
-            Edit Selected Text
-          </h3>
+          <h3 className="text-sm font-medium text-white mb-4">Edit Selected Text</h3>
 
           {/* Font Family */}
           <div className="space-y-2 mb-4">
@@ -243,15 +236,15 @@ export function TextControls() {
             <label className="text-xs text-white/70">Text Alignment</label>
             <div className="grid grid-cols-4 gap-1">
               {[
-                ["left", AlignLeft],
-                ["center", AlignCenter],
-                ["right", AlignRight],
-                ["justify", AlignJustify],
+                ['left', AlignLeft],
+                ['center', AlignCenter],
+                ['right', AlignRight],
+                ['justify', AlignJustify],
               ].map(([align, Icon]) => (
                 <Button
                   key={align}
                   onClick={() => applyTextAlign(align)}
-                  variant={textAlign === align ? "default" : "outline"}
+                  variant={textAlign === align ? 'default' : 'outline'}
                   size="sm"
                   className="p-2"
                 >
@@ -285,28 +278,24 @@ export function TextControls() {
             <label className="text-xs text-white/70">Formatting</label>
             <div className="flex gap-2">
               <Button
-                onClick={() => toggleFormat("bold")}
-                variant={
-                  selectedText.fontWeight === "bold" ? "default" : "outline"
-                }
+                onClick={() => toggleFormat('bold')}
+                variant={selectedText.fontWeight === 'bold' ? 'default' : 'outline'}
                 size="sm"
                 className="flex-1"
               >
                 <Bold className="h-4 w-4" />
               </Button>
               <Button
-                onClick={() => toggleFormat("italic")}
-                variant={
-                  selectedText.fontStyle === "italic" ? "default" : "outline"
-                }
+                onClick={() => toggleFormat('italic')}
+                variant={selectedText.fontStyle === 'italic' ? 'default' : 'outline'}
                 size="sm"
                 className="flex-1"
               >
                 <Italic className="h-4 w-4" />
               </Button>
               <Button
-                onClick={() => toggleFormat("underline")}
-                variant={selectedText.underline ? "default" : "outline"}
+                onClick={() => toggleFormat('underline')}
+                variant={selectedText.underline ? 'default' : 'outline'}
                 size="sm"
                 className="flex-1"
               >

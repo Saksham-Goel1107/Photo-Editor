@@ -1,10 +1,10 @@
 // hooks/use-plan-access.js
-import { useAuth } from "@clerk/nextjs";
+import { useAuth } from '@clerk/nextjs';
 
 export function usePlanAccess() {
   const { has } = useAuth();
 
-  const isPro = has?.({ plan: "pro" }) || false;
+  const isPro = has?.({ plan: 'pro' }) || false;
   const isFree = !isPro; // If not pro, then free (default)
 
   // Define which tools are available for each plan
@@ -46,7 +46,7 @@ export function usePlanAccess() {
   };
 
   return {
-    userPlan: isPro ? "pro" : "free_user",
+    userPlan: isPro ? 'pro' : 'free_user',
     isPro,
     isFree,
     hasAccess,

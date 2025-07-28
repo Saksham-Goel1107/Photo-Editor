@@ -1,6 +1,6 @@
 // convex/schema.js
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { defineSchema, defineTable } from 'convex/server';
+import { v } from 'convex/values';
 
 export default defineSchema({
   // Users table - synced with Clerk authentication
@@ -12,7 +12,7 @@ export default defineSchema({
     imageUrl: v.optional(v.string()), // Profile picture
 
     // Subscription plan (managed by Clerk billing)
-    plan: v.union(v.literal("free"), v.literal("pro")),
+    plan: v.union(v.literal('free'), v.literal('pro')),
 
     // Usage tracking for plan limits
     projectsUsed: v.number(), // Current project count
@@ -22,16 +22,16 @@ export default defineSchema({
     createdAt: v.number(),
     lastActiveAt: v.number(),
   })
-    .index("by_token", ["tokenIdentifier"]) // Primary auth lookup
-    .index("by_email", ["email"]) // Email lookups
-    .searchIndex("search_name", { searchField: "name" }) // User search
-    .searchIndex("search_email", { searchField: "email" }),
+    .index('by_token', ['tokenIdentifier']) // Primary auth lookup
+    .index('by_email', ['email']) // Email lookups
+    .searchIndex('search_name', { searchField: 'name' }) // User search
+    .searchIndex('search_email', { searchField: 'email' }),
 
   // Main projects table - stores editing sessions
   projects: defineTable({
     // Basic project info
     title: v.string(),
-    userId: v.id("users"), // Owner reference
+    userId: v.id('users'), // Owner reference
 
     // Canvas dimensions and state
     canvasState: v.any(), // Fabric.js canvas JSON (objects, layers, etc.)
@@ -50,22 +50,22 @@ export default defineSchema({
     backgroundRemoved: v.optional(v.boolean()), // Has background been removed
 
     // Organization
-    folderId: v.optional(v.id("folders")), // HW - Optional folder organization
+    folderId: v.optional(v.id('folders')), // HW - Optional folder organization
 
     // Timestamps
     createdAt: v.number(),
     updatedAt: v.number(), // Last edit time
   })
-    .index("by_user", ["userId"]) // Get user's projects
-    .index("by_user_updated", ["userId", "updatedAt"]) // Recent projects
-    .index("by_folder", ["folderId"]), // Projects in folder
+    .index('by_user', ['userId']) // Get user's projects
+    .index('by_user_updated', ['userId', 'updatedAt']) // Recent projects
+    .index('by_folder', ['folderId']), // Projects in folder
 
   // Simple folder organization
   folders: defineTable({
     name: v.string(), // Folder name
-    userId: v.id("users"), // Owner
+    userId: v.id('users'), // Owner
     createdAt: v.number(),
-  }).index("by_user", ["userId"]), // User's folders
+  }).index('by_user', ['userId']), // User's folders
 });
 
 /* 

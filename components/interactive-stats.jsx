@@ -1,12 +1,9 @@
-"use client";
+'use client';
 
-import {
-  useAnimatedCounter,
-  useIntersectionObserver,
-} from "@/hooks/use-landing-hooks";
-import { useEffect } from "react";
+import { useAnimatedCounter, useIntersectionObserver } from '@/hooks/use-landing-hooks';
+import { useEffect } from 'react';
 
-const AnimatedCounter = ({ target, suffix = "", duration = 2000 }) => {
+const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
   const [ref, isVisible] = useIntersectionObserver();
   const [count, setIsActive] = useAnimatedCounter(target, duration);
 
@@ -27,10 +24,10 @@ const AnimatedCounter = ({ target, suffix = "", duration = 2000 }) => {
 
 const InteractiveStats = () => {
   const stats = [
-    { label: "Images Processed", value: 10000, suffix: "+" },
-    { label: "Active Users", value: 500, suffix: "+" },
-    { label: "AI Transformations", value: 45000, suffix: "+" },
-    { label: "User Satisfaction", value: 98, suffix: "%" },
+    { label: 'Images Processed', value: 10000, suffix: '+' },
+    { label: 'Active Users', value: 500, suffix: '+' },
+    { label: 'AI Transformations', value: 45000, suffix: '+' },
+    { label: 'User Satisfaction', value: 98, suffix: '%' },
   ];
 
   return (
@@ -46,9 +43,7 @@ const InteractiveStats = () => {
                 {stat.value.toLocaleString()}
                 {stat.suffix}
               </div> */}
-              <div className="text-gray-400 uppercase tracking-wider text-sm">
-                {stat.label}
-              </div>
+              <div className="text-gray-400 uppercase tracking-wider text-sm">{stat.label}</div>
             </div>
           ))}
         </div>
